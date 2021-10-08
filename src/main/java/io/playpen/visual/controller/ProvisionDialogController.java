@@ -7,10 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
@@ -19,9 +16,8 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 public class ProvisionDialogController implements Initializable {
@@ -35,7 +31,7 @@ public class ProvisionDialogController implements Initializable {
     private TextField serverNameField;
 
     @FXML
-    private TextField coordinatorField;
+    private ChoiceBox coordinatorBox;
 
     @FXML
     private TableView<PropertyValue> propertyTable;
@@ -70,6 +66,9 @@ public class ProvisionDialogController implements Initializable {
                 new PropertyValue("port", ""),
                 new PropertyValue("managed_by", "user")
         );
+
+        coordinatorBox.getItems().addAll(new ArrayList<>(WorkspaceController.rootNode.getChildren().stream().map(TreeItem::getValue).collect(Collectors.toList())));
+        if(!coordinatorBox.getItems().isEmpty()) { coordinatorBox.getSelectionModel().select(0); }
     }
 
     public void setPackage(String name, String version) {
@@ -105,7 +104,8 @@ public class ProvisionDialogController implements Initializable {
         if (serverName.isEmpty())
             serverName = null;
 
-        String coordinatorName = coordinatorField.getText().trim();
+
+        String coordinatorName = coordinatorBox.getSelectionModel().getSelectedItem().toString();
         if (coordinatorName.isEmpty())
             coordinatorName = null;
 

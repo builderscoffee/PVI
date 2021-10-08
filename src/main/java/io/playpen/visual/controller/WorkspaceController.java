@@ -46,7 +46,7 @@ public class WorkspaceController implements Initializable, PPEventListener {
     @FXML
     private TextField searchField;
 
-    private TreeItem<String> rootNode = new TreeItem<>("Network");
+    public static TreeItem<String> rootNode = new TreeItem<>("Network");
 
     private PackagesTabController packagesTab;
     private UploadPackageTab uploadPackageTab;
