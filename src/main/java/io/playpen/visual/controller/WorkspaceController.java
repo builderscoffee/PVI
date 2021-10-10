@@ -131,6 +131,9 @@ public class WorkspaceController implements Initializable, PPEventListener {
 
         TransactionInfo info = PVIClient.get().sendListRequest();
         handleListTransaction(info);
+
+        // Auto Expand Tree
+        rootNode.getChildren().forEach(this::expandTreeView);
     }
 
     private void handleTreeItemDoubleClick(TreeItem<String> item) {
